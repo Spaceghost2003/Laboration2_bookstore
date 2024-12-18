@@ -13,5 +13,7 @@ namespace Laboration2_bookstore.ViewModel
         public double? Price { get; set; }
         public string AuthorName { get; set; }
         public DateOnly? Birthdate { get; set; }
+
+        public int? AuthorID { get; set; }
     }
 }

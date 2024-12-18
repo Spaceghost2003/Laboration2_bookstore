@@ -13,7 +13,13 @@ namespace Laboration2_bookstore.ViewModel
 {
     public class BookStoreViewModel :ViewModelBase
     {
-       
+       /* ---------------------------TO DO------------------------------ 
+        
+        1. Skapa en wrapper
+        
+        
+        
+       ----------------------------------------------------------------- */
 
         private ObservableCollection<Book> _myBooks { get; set; }
         public ObservableCollection<Book> MyBooks
@@ -49,12 +55,36 @@ namespace Laboration2_bookstore.ViewModel
             }
         }
 
+        private ObservableCollection<Store> _myStores;
+
+        public ObservableCollection<Store> MyStores
+        {
+            get { return _myStores; }
+            set 
+            {
+                _myStores = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Store _selectedStore;
+
+        public Store SelectedStore
+        {
+            get { return _selectedStore; }
+            set 
+            { 
+                _selectedStore = value;
+                OnPropertyChanged();
+            }
+        }
+
 
 
 
         public BookStoreViewModel()
         {
-
+            MyStores = GetAllStores();
             MyBooks = GetAllBooks(true);
             MyAuthors = GetAllAuthors();
             MyBookAuthor = GetBooksAndAuthor(MyBooks, MyAuthors);
@@ -71,13 +101,22 @@ namespace Laboration2_bookstore.ViewModel
 
             ObservableCollection<Book> AllBooks = new ObservableCollection<Book>(query);
 
-            if(printSQL)
-            {
-                Console.WriteLine(query.ToString());
-            }
-
             return AllBooks;
             
+        }
+
+        static ObservableCollection<Store> GetAllStores()
+        {
+            var stores = new ObservableCollection<Store>();
+            using var context = new BookStoreContext();
+
+            var query = context.Stores;
+
+             query.ToList();
+
+            ObservableCollection<Store> AllStores = new ObservableCollection<Store>(query);
+
+            return AllStores;
         }
 
         static ObservableCollection<Author> GetAllAuthors()
@@ -105,7 +144,8 @@ namespace Laboration2_bookstore.ViewModel
                 Title = book.Title,
                 Price = book.Price,
                 AuthorName = $"{author.FirstName} {author.LastName}",
-                Birthdate = author.Birthdate
+                Birthdate = author.Birthdate,
+                AuthorID = author.Id
             })
             .ToList();
 
@@ -114,5 +154,16 @@ namespace Laboration2_bookstore.ViewModel
             return bookAuthorCollection;
         }
 
+        //static void GetInventory(ObservableCollection<BookAuthorDTO> bookAuthors)
+        //{
+        //    var authors = new ObservableCollection<Author>();
+        //    using var context = new BookStoreContext();
+        //    var query = context.Authors;
+        //    query.ToList();
+
+        //    ObservableCollection<BookAuthor> AllAuthors = new ObservableCollection<BookAuthor>(query);
+
+        //    return AllAuthors;
+        //}
     }
 }
