@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Laboration2_bookstore.BookstoreContext;
 using System.Reflection.Metadata;
 using System.Linq;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Laboration2_bookstore.ViewModel
 {
@@ -55,6 +56,19 @@ namespace Laboration2_bookstore.ViewModel
             }
         }
 
+        private ObservableCollection<Inventory> _myInventory;
+
+        public ObservableCollection<Inventory> MyInventory
+        {
+            get { return _myInventory; }
+            set
+            {
+                _myInventory = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private ObservableCollection<Store> _myStores;
 
         public ObservableCollection<Store> MyStores
@@ -88,6 +102,7 @@ namespace Laboration2_bookstore.ViewModel
             MyBooks = GetAllBooks(true);
             MyAuthors = GetAllAuthors();
             MyBookAuthor = GetBooksAndAuthor(MyBooks, MyAuthors);
+            MyInventory = GetInventory();
 
         }
         static ObservableCollection<Book> GetAllBooks(bool printSQL = false)
@@ -153,6 +168,24 @@ namespace Laboration2_bookstore.ViewModel
 
             return bookAuthorCollection;
         }
+
+
+        static ObservableCollection<Inventory> GetInventory()
+        {
+            var Inventory = new ObservableCollection<Inventory>();
+            using var context = new BookStoreContext();
+
+            var query = context.Inventories;
+
+            query.ToList();
+
+            
+            ObservableCollection<Inventory> AllInventory = new ObservableCollection<Inventory>(query);
+
+            return AllInventory;
+        }
+
+
 
         //static void GetInventory(ObservableCollection<BookAuthorDTO> bookAuthors)
         //{

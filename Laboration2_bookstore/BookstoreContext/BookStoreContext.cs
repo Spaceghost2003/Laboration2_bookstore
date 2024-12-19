@@ -65,7 +65,7 @@ public partial class BookStoreContext : DbContext
                 .HasForeignKey(d => d.AuthorId)
                 .HasConstraintName("FK__Books__AuthourID__5070F446");
         });
-
+        //ändra den här eller databasen
         modelBuilder.Entity<Customer>(entity =>
         {
             entity.HasKey(e => e.CustomerId).HasName("PK__Customer__A4AE64B865D58F37");
